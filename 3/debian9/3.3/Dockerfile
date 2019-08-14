@@ -1,0 +1,68 @@
+FROM gcr.io/google-appengine/debian9 as builder
+
+# Update and install necessary packages
+
+RUN set -ex; \
+	apt-get update && \
+	apt-get -y install \
+	gnupg \
+	wget \
+	golang \
+	govendor
+
+# This is the release of Etcd to pull in.
+ENV ETCD_VER=3.3.13
+ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
+
+ENV GOPATH /usr/local
+ENV NOTICES_SHA256 517f1776f93f04937f28470204baacf1ed20f399b2c2d825c3d8b06b39285024
+
+# Download etcd version v3.3.13 and put binary files into /usr/local/bin
+RUN set -ex; \
+    # Downloading and importing CoreOS signing public key
+    wget -q -O - https://coreos.com/dist/pubkeys/app-signing-pubkey.gpg |  gpg --import && \
+    rm -f app-signing-pubkey.gpg && \
+    # Downloading source file and signature
+    wget -q https://storage.googleapis.com/etcd/v${ETCD_VER}/${ETCD_FILE}.asc && \
+    wget -q https://storage.googleapis.com/etcd/v${ETCD_VER}/${ETCD_FILE} && \
+    # Verifying downloaded source file signature
+    gpg --verify ${ETCD_FILE}.asc ${ETCD_FILE} && \
+    # Extracting and adding to binary directory
+    tar xzvf ${ETCD_FILE} -C /tmp && \
+    cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcd /usr/local/bin/ && \
+    cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/
+
+RUN set -eux \
+    # Downloads source code
+    && wget -q https://github.com/etcd-io/etcd/archive/v${ETCD_VER}.tar.gz \
+    && mkdir -p "${GOPATH}/src/github.com/etcd-io/etcd" \
+    && tar -xzf v${ETCD_VER}.tar.gz --strip-components=1 -C "${GOPATH}/src/github.com/etcd-io/etcd"
+
+RUN set -eux \
+    # Extracts licences
+    && cd "${GOPATH}/src/github.com/etcd-io/etcd" \
+    && govendor license +vendor > /NOTICES \
+    # Verifies checksum. Changing the checksum means changing the licenses.
+    && echo "${NOTICES_SHA256}" /NOTICES | sha256sum -c
+
+# Download the release License
+RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
+
+## Builded new "gcr.io/google-appengine/debian9" container will contain only files copied from Builder image
+FROM gcr.io/google-appengine/debian9
+
+RUN mkdir /usr/share/etcd
+
+COPY --from=builder /usr/local/bin/etcd /usr/local/bin/
+COPY --from=builder /usr/local/bin/etcdctl /usr/local/bin/
+COPY --from=builder /LICENSE /usr/share/etcd/LICENSE
+COPY --from=builder /NOTICES /usr/share/etcd/NOTICES
+
+ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
+
+COPY docker-entrypoint.sh /
+
+EXPOSE 2379 2380
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+CMD ["etcd"]
