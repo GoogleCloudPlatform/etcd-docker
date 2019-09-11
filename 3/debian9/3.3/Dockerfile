@@ -51,6 +51,9 @@ RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE 
 ## Builded new "gcr.io/google-appengine/debian9" container will contain only files copied from Builder image
 FROM gcr.io/google-appengine/debian9
 
+
+ENV C2D_RELEASE=3.3.13
+
 RUN mkdir /usr/share/etcd
 
 COPY --from=builder /usr/local/bin/etcd /usr/local/bin/
@@ -61,6 +64,9 @@ COPY --from=builder /NOTICES /usr/share/etcd/NOTICES
 ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
 
 COPY docker-entrypoint.sh /
+
+RUN test ${C2D_RELEASE} = $(/usr/local/bin/etcd --version | grep "etcd Version:" | cut -d: -f2) \
+         || { echo "Version check failed"; exit 1; }
 
 EXPOSE 2379 2380
 
