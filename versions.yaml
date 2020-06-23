@@ -13,14 +13,14 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 gcr.io/google-appengine/debian9
+  from9: &from9 marketplace.gcr.io/google/debian10
 
 versions:
-  - dir: '3/debian9/3.4'
+  - dir: '3/debian10/3.4'
     repo: etcd3
     tags:
-      - '3.4.9-debian9'
-      - '3.4-debian9'
+      - '3.4.9-debian10'
+      - '3.4-debian10'
       - '3.4.9'
       - '3.4'
       - '3'
@@ -30,11 +30,11 @@ versions:
       etcd:
         sha256: bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
         version: '3.4.9'
-  - dir: '3/debian9/3.3'
+  - dir: '3/debian10/3.3'
     repo: etcd3
     tags:
-      - '3.3.13-debian9'
-      - '3.3-debian9'
+      - '3.3.13-debian10'
+      - '3.3-debian10'
       - '3.3.13'
       - '3.3'
     from: *from9
