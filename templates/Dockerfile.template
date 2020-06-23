@@ -2,7 +2,6 @@ FROM {{ .From }} as builder
 
 # Update and install necessary packages
 {{- $etcd := index .Packages "etcd" }}
-{{- $template := index .TemplateArgs }}
 
 RUN set -ex; \
 	apt-get update && \

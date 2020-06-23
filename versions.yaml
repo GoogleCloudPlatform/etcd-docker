@@ -13,7 +13,7 @@
 # limitations under the License.
 
 _variables:
-  from9: &from9 marketplace.gcr.io/google/debian10
+  from10: &from10 marketplace.gcr.io/google/debian10
 
 versions:
   - dir: '3/debian10/3.4'
@@ -25,7 +25,7 @@ versions:
       - '3.4'
       - '3'
       - 'latest'
-    from: *from9
+    from: *from10
     packages:
       etcd:
         sha256: bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
@@ -37,7 +37,7 @@ versions:
       - '3.3-debian10'
       - '3.3.13'
       - '3.3'
-    from: *from9
+    from: *from10
     packages:
       etcd:
         sha256: 2c2e2a9867c1c61697ea0d8c0f74c7e9f1b1cf53b75dff95ca3bc03feb19ea7e
