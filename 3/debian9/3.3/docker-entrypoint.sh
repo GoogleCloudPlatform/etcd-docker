@@ -22,11 +22,14 @@ if [[ ! -z "${ETCD_ROOT_PASSWORD}" ]]; then
     ETCD_PID=$!
     while ! etcdctl member list &>/dev/null; do sleep 1; done
     # Creating root user and setting password
-    echo "${ETCD_ROOT_PASSWORD}" | etcdctl user add root
+    etcdctl user add root:"${ETCD_ROOT_PASSWORD}"
+    # Grant root role to root user if it doesn't exist
+    etcdctl user get root | grep Roles | grep --silent root
+    if [ $? != 0 ]; then
+        etcdctl user grant-role root root
+    fi
     # Enabling Authentication
     etcdctl auth enable
-    # Revoking quest role if exists
-    etcdctl -u root:"${ETCD_ROOT_PASSWORD}" role revoke guest -path '/*' --readwrite
     # Killing etcd daemon
     kill "${ETCD_PID}"
 else

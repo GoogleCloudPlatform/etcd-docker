@@ -16,6 +16,20 @@ _variables:
   from9: &from9 gcr.io/google-appengine/debian9
 
 versions:
+  - dir: '3/debian9/3.4'
+    repo: etcd3
+    tags:
+      - '3.4.9-debian9'
+      - '3.4-debian9'
+      - '3.4.9'
+      - '3.4'
+      - '3'
+      - 'latest'
+    from: *from9
+    packages:
+      etcd:
+        sha256: bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
+        version: '3.4.9'
   - dir: '3/debian9/3.3'
     repo: etcd3
     tags:
@@ -23,13 +37,10 @@ versions:
       - '3.3-debian9'
       - '3.3.13'
       - '3.3'
-      - '3'
-      - 'latest'
     from: *from9
-    templateArgs:
-      etcd_notices_check_sum: '517f1776f93f04937f28470204baacf1ed20f399b2c2d825c3d8b06b39285024'
     packages:
       etcd:
+        sha256: 2c2e2a9867c1c61697ea0d8c0f74c7e9f1b1cf53b75dff95ca3bc03feb19ea7e
         version: '3.3.13'
 
 cloudbuild:

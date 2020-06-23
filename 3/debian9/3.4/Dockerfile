@@ -1,8 +1,6 @@
-FROM {{ .From }} as builder
+FROM gcr.io/google-appengine/debian9 as builder
 
 # Update and install necessary packages
-{{- $etcd := index .Packages "etcd" }}
-{{- $template := index .TemplateArgs }}
 
 RUN set -ex; \
 	apt-get update && \
@@ -13,13 +11,13 @@ RUN set -ex; \
 	govendor
 
 # This is the release of Etcd to pull in.
-ENV ETCD_VER={{ $etcd.Version }}
+ENV ETCD_VER=3.4.9
 ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
 
 ENV GOPATH /usr/local
-ENV ETCD_SHA256 {{ $etcd.Sha256 }}
+ENV ETCD_SHA256 bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
 
-# Download etcd version v{{ $etcd.Version }} and put binary files into /usr/local/bin
+# Download etcd version v3.4.9 and put binary files into /usr/local/bin
 RUN set -ex; \
     # Downloading source file
     wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/${ETCD_FILE} \
@@ -44,11 +42,11 @@ RUN set -eux \
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "{{ .From }}" container will contain only files copied from Builder image
-FROM {{ .From }}
+## Builded new "gcr.io/google-appengine/debian9" container will contain only files copied from Builder image
+FROM gcr.io/google-appengine/debian9
 
 
-ENV C2D_RELEASE={{ $etcd.Version }}
+ENV C2D_RELEASE=3.4.9
 
 RUN mkdir /usr/share/etcd
 
