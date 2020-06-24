@@ -13,7 +13,8 @@
 # limitations under the License.
 
 setup:
-- command: [docker, run, --env, ETCD_ROOT_PASSWORD='rootpw', --name, some-etcd-$UNIQUE-id, -d, '$IMAGE']
+- command: [docker, run, --env, "ETCD_ROOT_PASSWORD=rootpw", --env, ETCDCTL_API=3, --name, some-etcd-$UNIQUE-id, -d, '$IMAGE']
+- command: [sleep, '5']
 teardown:
 - command: [docker, stop, some-etcd-$UNIQUE-id]
 - command: [docker, rm, some-etcd-$UNIQUE-id]
@@ -21,7 +22,7 @@ teardown:
 target: some-etcd-$UNIQUE-id
 tests:
 - name: SHOW etcdctl VERSION
-  command: [etcdctl, --version]
+  command: [etcdctl, version]
   expect:
     stdout:
       matches: '^etcdctl version'
@@ -31,12 +32,12 @@ tests:
     stdout:
       matches: '^etcd Version'
 - name: Set 'Hello World!' message
-  command: [etcdctl, -u, "root:${ETCD_ROOT_PASSWORD}", set, message, 'Hello World!']
+  command: [etcdctl, "--user=root:rootpw", "--endpoints=http://localhost:2379", put, message, 'Hello World!']
   expect:
     stdout:
-      equals: 'Hello World!'
+      matches: 'OK'
 - name: Get message
-  command: [etcdctl, -u, "root:${ETCD_ROOT_PASSWORD}", get, message]
+  command: [etcdctl, "--user=root:rootpw", "--endpoints=http://localhost:2379", get, message]
   expect:
     stdout:
-      equals: 'Hello World!'
+      matches: 'Hello World!'

@@ -1,4 +1,4 @@
-FROM gcr.io/google-appengine/debian9 as builder
+FROM marketplace.gcr.io/google/debian10 as builder
 
 # Update and install necessary packages
 
@@ -11,26 +11,22 @@ RUN set -ex; \
 	govendor
 
 # This is the release of Etcd to pull in.
-ENV ETCD_VER=3.3.13
+ENV ETCD_VER=3.4.9
 ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
 
 ENV GOPATH /usr/local
-ENV NOTICES_SHA256 517f1776f93f04937f28470204baacf1ed20f399b2c2d825c3d8b06b39285024
+ENV ETCD_SHA256 bcab421f6bf4111accfceb004e0a0ac2bcfb92ac93081d9429e313248dd78c41
 
-# Download etcd version v3.3.13 and put binary files into /usr/local/bin
+# Download etcd version v3.4.9 and put binary files into /usr/local/bin
 RUN set -ex; \
-    # Downloading and importing CoreOS signing public key
-    wget -q -O - https://coreos.com/dist/pubkeys/app-signing-pubkey.gpg |  gpg --import && \
-    rm -f app-signing-pubkey.gpg && \
-    # Downloading source file and signature
-    wget -q https://storage.googleapis.com/etcd/v${ETCD_VER}/${ETCD_FILE}.asc && \
-    wget -q https://storage.googleapis.com/etcd/v${ETCD_VER}/${ETCD_FILE} && \
-    # Verifying downloaded source file signature
-    gpg --verify ${ETCD_FILE}.asc ${ETCD_FILE} && \
+    # Downloading source file
+    wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/${ETCD_FILE} \
+    # Check SHA256sum
+    && echo "${ETCD_SHA256}" "${ETCD_FILE}" | sha256sum -c - \
     # Extracting and adding to binary directory
-    tar xzvf ${ETCD_FILE} -C /tmp && \
-    cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcd /usr/local/bin/ && \
-    cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/
+    && tar xzvf "${ETCD_FILE}" -C /tmp \
+    && cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcd /usr/local/bin/ \
+    && cp /tmp/etcd-v${ETCD_VER}-linux-amd64/etcdctl /usr/local/bin/
 
 RUN set -eux \
     # Downloads source code
@@ -41,18 +37,16 @@ RUN set -eux \
 RUN set -eux \
     # Extracts licences
     && cd "${GOPATH}/src/github.com/etcd-io/etcd" \
-    && govendor license +vendor > /NOTICES \
-    # Verifies checksum. Changing the checksum means changing the licenses.
-    && echo "${NOTICES_SHA256}" /NOTICES | sha256sum -c
+    && govendor license +vendor > /NOTICES
 
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "gcr.io/google-appengine/debian9" container will contain only files copied from Builder image
-FROM gcr.io/google-appengine/debian9
+## Builded new "marketplace.gcr.io/google/debian10" container will contain only files copied from Builder image
+FROM marketplace.gcr.io/google/debian10
 
 
-ENV C2D_RELEASE=3.3.13
+ENV C2D_RELEASE=3.4.9
 
 RUN mkdir /usr/share/etcd
 

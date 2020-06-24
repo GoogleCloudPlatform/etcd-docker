@@ -1,7 +1,6 @@
-FROM {{ .From }} as builder
+FROM marketplace.gcr.io/google/debian10 as builder
 
 # Update and install necessary packages
-{{- $etcd := index .Packages "etcd" }}
 
 RUN set -ex; \
 	apt-get update && \
@@ -12,13 +11,13 @@ RUN set -ex; \
 	govendor
 
 # This is the release of Etcd to pull in.
-ENV ETCD_VER={{ $etcd.Version }}
+ENV ETCD_VER=3.3.13
 ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
 
 ENV GOPATH /usr/local
-ENV ETCD_SHA256 {{ $etcd.Sha256 }}
+ENV ETCD_SHA256 2c2e2a9867c1c61697ea0d8c0f74c7e9f1b1cf53b75dff95ca3bc03feb19ea7e
 
-# Download etcd version v{{ $etcd.Version }} and put binary files into /usr/local/bin
+# Download etcd version v3.3.13 and put binary files into /usr/local/bin
 RUN set -ex; \
     # Downloading source file
     wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/${ETCD_FILE} \
@@ -43,11 +42,11 @@ RUN set -eux \
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "{{ .From }}" container will contain only files copied from Builder image
-FROM {{ .From }}
+## Builded new "marketplace.gcr.io/google/debian10" container will contain only files copied from Builder image
+FROM marketplace.gcr.io/google/debian10
 
 
-ENV C2D_RELEASE={{ $etcd.Version }}
+ENV C2D_RELEASE=3.3.13
 
 RUN mkdir /usr/share/etcd
 
