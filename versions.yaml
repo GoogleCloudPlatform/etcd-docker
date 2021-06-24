@@ -29,6 +29,7 @@ versions:
     packages:
       etcd:
         sha256: 864baa0437f8368e0713d44b83afe21dce1fb4ee7dae4ca0f9dd5f0df22d01c4
+        version: '3.5.0'
   - dir: '3/debian10/3.4'
     repo: etcd3
     tags:
