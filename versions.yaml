@@ -31,16 +31,4 @@ versions:
   - '3.5'
   - '3'
   - latest
-- dir: 3/debian10/3.4
-  from: marketplace.gcr.io/google/debian10
-  packages:
-    etcd:
-      sha256: 2e2d5b3572e077e7641193ed07b4929b0eaf0dc2f9463e9b677765528acafb89
-      version: 3.4.16
-  repo: etcd3
-  tags:
-  - 3.4.16-debian10
-  - 3.4-debian10
-  - 3.4.16
-  - '3.4'
 
