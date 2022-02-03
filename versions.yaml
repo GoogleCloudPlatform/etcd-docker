@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,14 +20,14 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     etcd:
-      sha256: 728a14914217ce60de2e1299fc1a2c2c5564e7ffd0d9dadf3f5073103ab619b4
-      version: 3.5.1
+      sha256: 256cad725542d6fd463e81b8a19b86ead4cdfe113f7fb8a1eabc6c32c25d068b
+      version: 3.5.2
   repo: etcd3
   tags:
-  - 3.5.1-debian10
+  - 3.5.2-debian10
   - 3.5-debian10
   - 3-debian10
-  - 3.5.1
+  - 3.5.2
   - '3.5'
   - '3'
   - latest
