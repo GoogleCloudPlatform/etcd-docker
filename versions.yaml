@@ -20,14 +20,14 @@ versions:
   from: marketplace.gcr.io/google/debian10
   packages:
     etcd:
-      sha256: 256cad725542d6fd463e81b8a19b86ead4cdfe113f7fb8a1eabc6c32c25d068b
-      version: 3.5.2
+      sha256: b1091166153df1ee0bb29b47fb1943ef0ddf0cd5d07a8fe69827580a08134def
+      version: 3.5.4
   repo: etcd3
   tags:
-  - 3.5.2-debian10
+  - 3.5.4-debian10
   - 3.5-debian10
   - 3-debian10
-  - 3.5.2
+  - 3.5.4
   - '3.5'
   - '3'
   - latest
