@@ -46,6 +46,22 @@ RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE 
 ## Builded new "{{ .From }}" container will contain only files copied from Builder image
 FROM {{ .From }}
 
+RUN apt-get update \
+    && apt-get -y install \
+      gpgv \
+      gzip \
+      openssl \
+      libc-bin \
+      libc6 \
+      libpcre2-8-0 \
+      libssl1.1 \
+      libgnutls30 \
+      liblzma5 \
+      libsystemd0 \
+      libtirpc-common \
+      libtirpc3 \
+      libudev1 \
+      zlib1g
 
 ENV C2D_RELEASE={{ $etcd.Version }}
 

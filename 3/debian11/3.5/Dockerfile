@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian10 as builder
+FROM marketplace.gcr.io/google/debian11 as builder
 
 # Update and install necessary packages
 
@@ -42,9 +42,25 @@ RUN set -eux \
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "marketplace.gcr.io/google/debian10" container will contain only files copied from Builder image
-FROM marketplace.gcr.io/google/debian10
+## Builded new "marketplace.gcr.io/google/debian11" container will contain only files copied from Builder image
+FROM marketplace.gcr.io/google/debian11
 
+RUN apt-get update \
+    && apt-get -y install \
+      gpgv \
+      gzip \
+      openssl \
+      libc-bin \
+      libc6 \
+      libpcre2-8-0 \
+      libssl1.1 \
+      libgnutls30 \
+      liblzma5 \
+      libsystemd0 \
+      libtirpc-common \
+      libtirpc3 \
+      libudev1 \
+      zlib1g
 
 ENV C2D_RELEASE=3.5.4
 
