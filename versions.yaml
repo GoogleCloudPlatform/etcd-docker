@@ -16,17 +16,17 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian10/3.5
-  from: marketplace.gcr.io/google/debian10
+- dir: 3/debian11/3.5
+  from: marketplace.gcr.io/google/debian11
   packages:
     etcd:
       sha256: 7910a2fdb1863c80b885d06f6729043bff0540f2006bf6af34674df2636cb906
       version: 3.5.5
   repo: etcd3
   tags:
-  - 3.5.5-debian10
-  - 3.5-debian10
-  - 3-debian10
+  - 3.5.5-debian11
+  - 3.5-debian11
+  - 3-debian11
   - 3.5.5
   - '3.5'
   - '3'
