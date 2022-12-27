@@ -20,14 +20,14 @@ versions:
   from: marketplace.gcr.io/google/debian11
   packages:
     etcd:
-      sha256: b1091166153df1ee0bb29b47fb1943ef0ddf0cd5d07a8fe69827580a08134def
-      version: 3.5.4
+      sha256: 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
+      version: 3.5.6
   repo: etcd3
   tags:
-  - 3.5.4-debian11
+  - 3.5.6-debian11
   - 3.5-debian11
   - 3-debian11
-  - 3.5.4
+  - 3.5.6
   - '3.5'
   - '3'
   - latest
