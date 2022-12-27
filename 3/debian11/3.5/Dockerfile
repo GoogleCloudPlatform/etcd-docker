@@ -11,13 +11,13 @@ RUN set -ex; \
 	govendor
 
 # This is the release of Etcd to pull in.
-ENV ETCD_VER=3.5.4
+ENV ETCD_VER=3.5.6
 ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
 
 ENV GOPATH /usr/local
-ENV ETCD_SHA256 b1091166153df1ee0bb29b47fb1943ef0ddf0cd5d07a8fe69827580a08134def
+ENV ETCD_SHA256 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
 
-# Download etcd version v3.5.4 and put binary files into /usr/local/bin
+# Download etcd version v3.5.6 and put binary files into /usr/local/bin
 RUN set -ex; \
     # Downloading source file
     wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/${ETCD_FILE} \
@@ -62,7 +62,7 @@ RUN apt-get update \
       libudev1 \
       zlib1g
 
-ENV C2D_RELEASE=3.5.4
+ENV C2D_RELEASE=3.5.6
 
 RUN mkdir /usr/share/etcd
 
