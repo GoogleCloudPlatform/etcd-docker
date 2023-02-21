@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian11 as builder
+FROM marketplace.gcr.io/google/c2d-debian11 as builder
 
 # Update and install necessary packages
 
@@ -11,13 +11,13 @@ RUN set -ex; \
 	govendor
 
 # This is the release of Etcd to pull in.
-ENV ETCD_VER=3.5.6
+ENV ETCD_VER=3.5.7
 ENV ETCD_FILE=etcd-v${ETCD_VER}-linux-amd64.tar.gz
 
 ENV GOPATH /usr/local
-ENV ETCD_SHA256 4db32e3bc06dd0999e2171f76a87c1cffed8369475ec7aa7abee9023635670fb
+ENV ETCD_SHA256 a43119af79c592a874e8f59c4f23832297849d0c479338f9df36e196b86bc396
 
-# Download etcd version v3.5.6 and put binary files into /usr/local/bin
+# Download etcd version v3.5.7 and put binary files into /usr/local/bin
 RUN set -ex; \
     # Downloading source file
     wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/${ETCD_FILE} \
@@ -42,8 +42,8 @@ RUN set -eux \
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "marketplace.gcr.io/google/debian11" container will contain only files copied from Builder image
-FROM marketplace.gcr.io/google/debian11
+## Builded new "marketplace.gcr.io/google/c2d-debian11" container will contain only files copied from Builder image
+FROM marketplace.gcr.io/google/c2d-debian11
 
 RUN apt-get update \
     && apt-get -y install \
@@ -62,7 +62,7 @@ RUN apt-get update \
       libudev1 \
       zlib1g
 
-ENV C2D_RELEASE=3.5.6
+ENV C2D_RELEASE=3.5.7
 
 RUN mkdir /usr/share/etcd
 
