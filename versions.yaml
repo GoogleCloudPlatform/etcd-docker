@@ -20,14 +20,14 @@ versions:
   from: marketplace.gcr.io/google/c2d-debian11
   packages:
     etcd:
-      sha256: a43119af79c592a874e8f59c4f23832297849d0c479338f9df36e196b86bc396
-      version: 3.5.7
+      sha256: d4c1b8d90ad53658f12ffc293afc5694b7bc6cb093af609188649a799e1cc8dc
+      version: 3.5.8
   repo: etcd3
   tags:
-  - 3.5.7-debian11
+  - 3.5.8-debian11
   - 3.5-debian11
   - 3-debian11
-  - 3.5.7
+  - 3.5.8
   - '3.5'
   - '3'
   - latest
