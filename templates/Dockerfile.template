@@ -1,4 +1,4 @@
-FROM marketplace.gcr.io/google/debian12 as builder
+FROM {{ .From }} as builder
 
 # Update and install necessary packages
 RUN apt-get update && \
