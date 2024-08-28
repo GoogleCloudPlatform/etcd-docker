@@ -1,15 +1,13 @@
 # Update and install necessary packages
-{{- $etcd := index .Packages "etcd" }}
-{{- $golang := index .Packages "golang" }}
 
-FROM {{ .From }} as builder
+FROM marketplace.gcr.io/google/debian12 as builder
 
 # Update and install necessary packages
 RUN apt-get update && \
     apt-get install -y wget git tar gzip build-essential
 
 # Install Go
-ARG GO_VERSION={{ $golang.Version }}
+ARG GO_VERSION=1.20
 RUN wget https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz && \
     tar -xzf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local
 
@@ -24,7 +22,7 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin"
 RUN go install github.com/kardianos/govendor@latest
 
 # Configure environment variables for etcd
-ARG ETCD_VERSION={{ $etcd.Version }}
+ARG ETCD_VERSION=3.5.15
 ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz

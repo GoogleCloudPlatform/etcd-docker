@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,18 +16,20 @@
 cloudbuild:
   enable_parallel: false
 versions:
-- dir: 3/debian11/3.5
-  from: marketplace.gcr.io/google/c2d-debian11
+- dir: 3/debian12/3.5
+  from: marketplace.gcr.io/google/debian12
   packages:
     etcd:
-      sha256: e256885e753dc99001335e099d3c2eb8cf21a865a087ee4d7e3665752ae5929a
-      version: 3.5.11
+      sha256: 3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
+      version: 3.5.15
+    golang:
+      version: 1.20
   repo: etcd3
   tags:
-  - 3.5.11-debian11
-  - 3.5-debian11
-  - 3-debian11
-  - 3.5.11
+  - 3.5.15-debian12
+  - 3.5-debian12
+  - 3-debian12
+  - 3.5.15
   - '3.5'
   - '3'
   - latest
