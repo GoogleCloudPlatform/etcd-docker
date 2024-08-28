@@ -22,6 +22,8 @@ versions:
     etcd:
       sha256: 3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
       version: 3.5.15
+    golang:
+      version: 1.20
   repo: etcd3
   tags:
   - 3.5.15-debian12

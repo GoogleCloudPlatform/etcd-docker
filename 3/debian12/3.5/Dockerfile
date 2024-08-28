@@ -1,3 +1,5 @@
+# Update and install necessary packages
+
 FROM marketplace.gcr.io/google/debian12 as builder
 
 # Update and install necessary packages
