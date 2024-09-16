@@ -33,4 +33,7 @@ versions:
   - '3.5'
   - '3'
   - latest
+  templateArgs:
+    c2dRelease: 3.5.15
+
 
