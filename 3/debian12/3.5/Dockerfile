@@ -26,6 +26,7 @@ ARG ETCD_VERSION=3.5.15
 ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz
+ENV C2D_RELEASE 3.5.15
 
 # Download etcd source code and validate checksum
 RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -O ${ETCD_FILE} && \
@@ -65,6 +66,12 @@ RUN chmod +x /docker-entrypoint.sh
 
 ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
 EXPOSE 2379 2380
+
+RUN etcd_version=$(etcd --version | grep 'etcd version' | cut -d ':' -f 2 | tr -d ' ') && \
+    if [ "${C2D_RELEASE}" != "${etcd_version}" ]; then \
+        echo "Version check failed"; \
+        exit 1; \
+    fi
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["etcd"]
