@@ -68,11 +68,8 @@ RUN chmod +x /docker-entrypoint.sh
 ENV ETCD_DATA_DIR="/var/run/etcd/default.etcd"
 EXPOSE 2379 2380
 
-RUN etcd_version=$(etcd --version | grep 'etcd version' | cut -d ':' -f 2 | tr -d ' ') && \
-    if [ "${C2D_RELEASE}" != "${etcd_version}" ]; then \
-        echo "Version check failed"; \
-        exit 1; \
-    fi
+RUN etcd_version=$(etcd --version | grep 'etcd Version:' | cut -d ' ' -f 3) && \
+    test "${C2D_RELEASE}" = "${etcd_version}" || { echo "Version check failed"; exit 1; }
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["etcd"]
