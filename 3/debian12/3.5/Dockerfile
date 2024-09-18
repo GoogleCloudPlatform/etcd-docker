@@ -26,7 +26,6 @@ ARG ETCD_VERSION=3.5.15
 ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz
-ENV C2D_RELEASE 3.5.15
 
 # Download etcd source code and validate checksum
 RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -O ${ETCD_FILE} && \
@@ -50,8 +49,10 @@ RUN wget -q https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-
 # Download the release License
 RUN wget -q https://raw.githubusercontent.com/etcd-io/etcd/v${ETCD_VER}/LICENSE -O /LICENSE
 
-## Builded new "marketplace.gcr.io/google/c2d-debian11" container will contain only files copied from Builder imag
+## Builded new "marketplace.gcr.io/google/debian12" container will contain only files copied from Builder image
 FROM marketplace.gcr.io/google/debian12
+
+ENV C2D_RELEASE 3.5.15
 
 RUN apt-get update && \
     apt-get install -y libc-bin libssl3 && \
