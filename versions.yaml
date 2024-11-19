@@ -25,6 +25,9 @@ versions:
     golang:
       version: 1.20
   repo: etcd3
+  annotations:
+  - key: com.googleapis.cloudmarketplace.product.service.name
+    value: services/8be1fafd-f0c6-4770-b23e-bce06be7b750.cloudpartnerservices.goog
   tags:
   - 3.5.15-debian12
   - 3.5-debian12
