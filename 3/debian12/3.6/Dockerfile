@@ -22,7 +22,7 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin"
 RUN go install github.com/kardianos/govendor@latest
 
 # Configure environment variables for etcd
-ARG ETCD_VERSION=3.5.21
+ARG ETCD_VERSION=3.6.0
 ARG ETCD_SHA256=3f6b48d8c2844699f2b19c1880508ecf63e1489769ed37ebb97495d5cd848a89
 ENV ETCD_VER=${ETCD_VERSION}
 ENV ETCD_FILE=etcd.tar.gz
